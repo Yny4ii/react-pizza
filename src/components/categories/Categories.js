@@ -5,7 +5,7 @@ const Categories = () => {
     const [activeCategory, setActiveCategory] = useState(0);
 
     const onClickCategory = (index) => {
-        setActiveCategory(index)
+        setActiveCategory(index);
     }
 
     return (<div className="categories">
