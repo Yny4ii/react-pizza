@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 
 const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCategory, pizzaSizes, pizzaTypes}) => {
-    let [cartCounter, setCartCounter] = useState(0);
+    const [cartCounter, setCartCounter] = useState(0);
     const [pizzaType, setPizzaType] = useState(0);
     const [pizzaSize, setPizzaSize] = useState(0);
     const pizzaDoughType = ['тонкое', 'традиционное'];
+
 
 
     const onClickPizzaSize = (index) => {
@@ -15,8 +16,8 @@ const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCat
         setPizzaType(index);
     }
 
-    const handlerAddPizza = () => {
-        setCartCounter(++cartCounter);
+    const onClickAddPizza = () => {
+        setCartCounter(1 + cartCounter);
     }
 
     return (<div className="pizza-block">
@@ -31,7 +32,7 @@ const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCat
                     {
 
                         pizzaTypes.map((e, index) => (
-                                <li onClick={() => onClickPizzaType(index)}
+                                <li key={index} onClick={() => onClickPizzaType(index)}
                                     className={pizzaType === index ? "active" : ""}
                                 >{pizzaDoughType[e]}</li>
                             )
@@ -40,7 +41,7 @@ const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCat
                 </ul>
                 <ul>
                     {pizzaSizes.map((e, index) => (
-                            <li onClick={() => onClickPizzaSize(index)}
+                            <li key={index} onClick={() => onClickPizzaSize(index)}
                                 className={pizzaSize === index ? "active" : ''}
                             >{e} см.</li>
                         )
@@ -49,7 +50,7 @@ const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCat
             </div>
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {pizzaPrice} ₽</div>
-                <button onClick={handlerAddPizza}
+                <button onClick={onClickAddPizza}
                         className="button button--outline button--add">
                     <svg
                         width="12"

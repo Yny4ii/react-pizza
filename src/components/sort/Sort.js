@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 
-const sortVariants = ['популярности', 'цене', 'алфавиту']
 const Sort = () => {
+    const sortVariants = ['популярности', 'цене', 'алфавиту']
+
     const [visiblePopUp, setVisiblePopUp] = useState(false);
     const [activeSortVariant, setActiveSortVariant] = useState(0);
-    const [sortedBy, setSortedBy] = useState('популярности');
+    const sortName = sortVariants[activeSortVariant];
 
 
     const onClickSort = () => {
@@ -13,7 +14,7 @@ const Sort = () => {
 
     const onClickSortVariant = (index) => {
         setActiveSortVariant(index);
-        setSortedBy(sortVariants[index]);
+        setVisiblePopUp(!visiblePopUp);
     }
 
     return (
@@ -32,12 +33,12 @@ const Sort = () => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={onClickSort}>{sortedBy}</span>
+                <span onClick={onClickSort}>{sortName}</span>
             </div>
 
 
             {
-                visiblePopUp ? (<div className="sort__popup">
+                visiblePopUp && (<div className="sort__popup">
                     <ul>
                         {sortVariants.map((e, index) => (
                             <li onClick={() => onClickSortVariant(index)}
@@ -45,7 +46,7 @@ const Sort = () => {
                                 key={index}>{e}</li>
                         ))}
                     </ul>
-                </div>) : ('')
+                </div>)
             }
 
         </div>
