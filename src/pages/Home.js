@@ -10,20 +10,25 @@ const Home = () => {
 
     const [pizzas, setPizzas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [sort, setSort] = useState({name: 'популярности', sort: 'rating'});
+    const [activeCategory, setActiveCategory] = useState(0);
+
 
     useEffect(() => {
-        fetch(api).then((res) => res.json()).then((res) => {
+        setLoading(true)
+        fetch(`${api}?${activeCategory > 0 ? `category=${activeCategory}` : ''}&sortBy=${sort.sort}&order=desc`).then((res) => res.json()).then((res) => {
             setPizzas(res);
             setLoading(false)
         })
 
-    }, [])
+    }, [activeCategory, sort])
+
 
     return (
         <div className="container">
             <div className="content__top">
-                <Categories/>
-                <Sort/>
+                <Categories activeCategory={activeCategory} onClickCategory={(index) => setActiveCategory(index)}/>
+                <Sort setSort={setSort} sort={sort}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
