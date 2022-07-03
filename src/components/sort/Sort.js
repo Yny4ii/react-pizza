@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import './Sort.scss'
 
-const Sort = ({setSort, sort}) => {
+const Sort = ({setSort, sort, descSorting, setDescSorting}) => {
     const sortVariants = [
         {name: 'популярности', sort: 'rating'},
         {name: 'цене', sort: 'price'},
@@ -22,6 +23,8 @@ const Sort = ({setSort, sort}) => {
         <div className="sort">
             <div className="sort__label">
                 <svg
+                    onClick={() => setDescSorting(!descSorting)}
+                    className={descSorting ? "desc" : ""}
                     width="10"
                     height="6"
                     viewBox="0 0 10 6"
