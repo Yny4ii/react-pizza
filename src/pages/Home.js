@@ -6,33 +6,35 @@ import Categories from "../components/categories/Categories";
 import Sort from "../components/sort/Sort";
 import Pagination from "../components/pagination/Pagination";
 import {SearchContext} from "../App";
+import {useSelector} from "react-redux";
+import axios from "axios";
 
 const Home = () => {
     const api = 'https://61f167bd072f86001749f1cd.mockapi.io/pizzas';
     const {searchInput, setSearchInput} = React.useContext(SearchContext);
 
+    const {categoryId, sortType} = useSelector(state => state.filter)
+    const currentPage = useSelector(state => state.pagination.currentPage)
+
     const [pizzas, setPizzas] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [sort, setSort] = useState({name: 'популярности', sort: 'rating'});
-    const [activeCategory, setActiveCategory] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1)
     const [descSorting, setDescSorting] = useState(true);
 
 
     useEffect(() => {
         const search = searchInput ? `&search=${searchInput}` : '';
-        const category = activeCategory > 0 ? `category=${activeCategory}` : '';
+        const category = categoryId > 0 ? `category=${categoryId}` : '';
         const typeOfSort = descSorting ? "desc" : "asc"
 
         setLoading(true)
-        fetch(`${api}?page=${currentPage}&limit=4&${category}&sortBy=${sort.sort}&order=${typeOfSort}${search}`)
-            .then((res) => res.json())
+        axios.get(`${api}?page=${currentPage}&limit=4&${category}&sortBy=${sortType.sort}&order=${typeOfSort}${search}`)
             .then((res) => {
-                setPizzas(res);
+                setPizzas(res.data);
                 setLoading(false)
             })
+        console.log(currentPage)
 
-    }, [activeCategory, sort, searchInput, descSorting, currentPage])
+    }, [categoryId, sortType, searchInput, descSorting, currentPage])
 
     const skeletons = [...new Array(12)].map((_, index) => (
         <Loader key={index}/>));
@@ -52,8 +54,8 @@ const Home = () => {
     return (
         <div className="container">
             <div className="content__top">
-                <Categories activeCategory={activeCategory} onClickCategory={(index) => setActiveCategory(index)}/>
-                <Sort setSort={setSort} sort={sort} descSorting={descSorting} setDescSorting={setDescSorting}/>
+                <Categories/>
+                <Sort descSorting={descSorting} setDescSorting={setDescSorting}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
@@ -61,7 +63,7 @@ const Home = () => {
                     loading ? skeletons : items
                 }
             </div>
-            <Pagination setCurrentPage={setCurrentPage}/>
+            <Pagination/>
         </div>
 
     );
