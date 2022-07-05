@@ -27,12 +27,12 @@ const Home = () => {
         const typeOfSort = descSorting ? "desc" : "asc"
 
         setLoading(true)
+
         axios.get(`${api}?page=${currentPage}&limit=4&${category}&sortBy=${sortType.sort}&order=${typeOfSort}${search}`)
             .then((res) => {
                 setPizzas(res.data);
                 setLoading(false)
             })
-        console.log(currentPage)
 
     }, [categoryId, sortType, searchInput, descSorting, currentPage])
 
