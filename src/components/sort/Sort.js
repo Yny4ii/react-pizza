@@ -3,11 +3,12 @@ import './Sort.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setSortType} from "../../redux/slices/filterSlice";
 
+export const sortVariants = [
+    {name: 'популярности', sort: 'rating'},
+    {name: 'цене', sort: 'price'},
+    {name: 'алфавиту', sort: 'title'}]
+
 const Sort = ({descSorting, setDescSorting}) => {
-    const sortVariants = [
-        {name: 'популярности', sort: 'rating'},
-        {name: 'цене', sort: 'price'},
-        {name: 'алфавиту', sort: 'title'}]
 
     const [visiblePopUp, setVisiblePopUp] = useState(false);
     const dispatch = useDispatch();
