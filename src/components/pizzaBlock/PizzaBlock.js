@@ -1,14 +1,18 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {addItem} from "../../redux/slices/cartSlice";
 
-const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCategory, pizzaSizes, pizzaTypes}) => {
-    const [cartCounter, setCartCounter] = useState(0);
+const PizzaBlock = ({id, pizzaName, pizzaPrice, pizzaImageUrl, pizzaSizes, pizzaTypes}) => {
+
+    const dispatch = useDispatch();
+    const cartItem = useSelector(state => state.cart.items.find(e => e.id === id))
     const [pizzaType, setPizzaType] = useState(0);
     const [pizzaSize, setPizzaSize] = useState(0);
     const pizzaDoughType = ['тонкое', 'традиционное'];
 
 
-
     const onClickPizzaSize = (index) => {
+
         setPizzaSize(index);
     }
 
@@ -17,7 +21,16 @@ const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCat
     }
 
     const onClickAddPizza = () => {
-        setCartCounter(1 + cartCounter);
+        const item = {
+            id,
+            pizzaName,
+            pizzaPrice,
+            pizzaImageUrl,
+            pizzaType: pizzaDoughType[pizzaType],
+            pizzaSize: pizzaSizes[pizzaSize]
+        }
+        console.log(item)
+        dispatch(addItem(item))
     }
 
     return (<div className="pizza-block">
@@ -65,7 +78,7 @@ const PizzaBlock = ({pizzaName, pizzaPrice, pizzaImageUrl, pizzaRating, pizzaCat
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>{cartCounter}</i>
+                    <i>{cartItem ? cartItem.count : 0}</i>
                 </button>
             </div>
         </div>

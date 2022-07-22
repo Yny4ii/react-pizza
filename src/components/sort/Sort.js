@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './Sort.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setSortType} from "../../redux/slices/filterSlice";
@@ -9,10 +9,26 @@ export const sortVariants = [
     {name: 'алфавиту', sort: 'title'}]
 
 const Sort = ({descSorting, setDescSorting}) => {
-
+    const sortRef = useRef();
     const [visiblePopUp, setVisiblePopUp] = useState(false);
     const dispatch = useDispatch();
     const sortType = useSelector(state => state.filter.sortType)
+
+    useEffect(() => {
+        const handleClick = (event) => {
+            if (!event.path.includes(sortRef.current) && visiblePopUp) {
+                setVisiblePopUp(false)
+                console.log("pop up")
+            }
+        }
+
+
+
+        document.body.addEventListener('click', handleClick)
+        return () => {
+            document.body.removeEventListener('click', handleClick)
+        }
+    })
 
     const onClickSort = () => {
         setVisiblePopUp(!visiblePopUp);
@@ -24,7 +40,7 @@ const Sort = ({descSorting, setDescSorting}) => {
     }
 
     return (
-        <div className="sort">
+        <div ref={sortRef} className="sort">
             <div className="sort__label">
                 <svg
                     onClick={() => setDescSorting(!descSorting)}
